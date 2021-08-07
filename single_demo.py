@@ -25,7 +25,8 @@ class Demo:
     def __init__(self):
         self.args = args
         self.net = model().cuda()
-        self.net = nn.DataParallel(self.net, device_ids=self.args.gpu_ids)
+        self.net = nn.DataParallel(self.net)
+        self.net.cuda()
         self.net.load_state_dict(torch.load(self.args.model))
         self.input_transform = Compose([Resize((512, 512)), ToTensor(
         ), Normalize([.485, .456, .406], [.229, .224, .225])])
