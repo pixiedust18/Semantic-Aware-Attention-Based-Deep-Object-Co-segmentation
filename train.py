@@ -75,7 +75,8 @@ class Trainer:
         self.label_transform = Compose(
             [Resize((512, 512)), CenterCrop(512), ToLabel(), Relabel()])
         self.net = model().cuda()
-        self.net = nn.DataParallel(self.net).to(self.device)
+        self.net = nn.DataParallel(self.net)
+        self.net.cuda()
         self.train_data_loader = DataLoader(coseg_train_dataset(self.args.train_data, self.args.train_label, self.args.train_txt, self.input_transform, self.label_transform),
                                             num_workers=self.args.num_worker, batch_size=self.args.batch_size, shuffle=True)
         self.val_data_loader = DataLoader(coseg_val_dataset(self.args.val_data, self.args.val_label, self.args.val_txt, self.input_transform, self.label_transform),
